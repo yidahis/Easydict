@@ -10,20 +10,12 @@
 #import "EZDeviceSystemInfo.h"
 #import "Easydict-Swift.h"
 
-@import FirebaseCore;
-@import FirebaseAnalytics;
 @import Sentry;
 
 @implementation EZLog
 
 + (void)setupCrashLogService {
 #if !DEBUG
-    // Firebase can only be configured once.
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [FIRApp configure];
-    });
-
     // Sentry SDK https://izual.sentry.io/projects/easydict/getting-started/?installationMode=manual&product=performance-monitoring&product=profiling
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
         options.dsn = SecretKeyManager.keyValues[@"sentryDSN"];
@@ -62,9 +54,7 @@
         return;
     }
 
-#if !DEBUG
-        [FIRAnalytics logEventWithName:name parameters:dict];
-#endif
+    // Firebase removed. No-op for now on macOS.
 }
 
 
