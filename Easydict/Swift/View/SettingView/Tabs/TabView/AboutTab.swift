@@ -64,7 +64,7 @@ struct AboutTab: View {
                     }
 
                     Button {
-                        HostWindowManager.shared.showAcknowWindow()
+//                        HostWindowManager.shared.showAcknowWindow()
                     } label: {
                         Label("setting.about.acknowledgements", systemSymbol: .checkmarkSealFill)
                     }

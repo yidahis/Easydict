@@ -6,6 +6,7 @@
 //  Copyright © 2025 izual. All rights reserved.
 //
 
+import AppKit
 import Foundation
 import SwiftUI
 
@@ -27,6 +28,9 @@ final class HostWindowManager {
         resizable: Bool = true,
         @ViewBuilder content: () -> Content
     ) {
+        // Bring app to front so the new window is visible immediately
+        NSApp.activate(ignoringOtherApps: true)
+
         closeWindow(windowId: windowId)
 
         var styleMask: NSWindow.StyleMask = [.titled, .closable, .miniaturizable]
@@ -73,17 +77,38 @@ final class HostWindowManager {
 // MARK: - Window Creation Methods
 
 extension HostWindowManager {
-    /// Show the acknowledgements window.
-    func showAcknowWindow() {
-        showWindow(windowId: .acknowledgementsWindowId) {
-            AcknowListView()
+    /// Show the History window.
+    func showHistoryWindow() {
+        showWindow(windowId: "history_window", title: NSLocalizedString("history_title", comment: "")) {
+            HistoryListView()
         }
     }
 
-    /// Show the About window.
+    /// Show the About window (stub implementation to satisfy menu command).
     func showAboutWindow() {
-        showWindow(windowId: .aboutWindowId, width: 600, height: 220, resizable: false) {
-            AboutTab()
+        showWindow(
+            windowId: "about_window",
+            title: NSLocalizedString("menubar.about", comment: ""),
+            width: 600,
+            height: 220,
+            resizable: false
+        ) {
+            AboutWindowView()
         }
+    }
+}
+
+// MARK: - AboutWindowView
+
+private struct AboutWindowView: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            Text("Easydict")
+                .font(.title2)
+            Text("menubar.about")
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(24)
     }
 }

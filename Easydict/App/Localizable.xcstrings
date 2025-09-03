@@ -983,6 +983,9 @@
         }
       }
     },
+    "clear" : {
+
+    },
     "clear_all" : {
       "localizations" : {
         "en" : {
@@ -1095,6 +1098,9 @@
           }
         }
       }
+    },
+    "copy" : {
+
     },
     "copy_text" : {
       "localizations" : {
@@ -2007,6 +2013,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在翻譯視窗中可使用 ⌘ +/- 快速鍵變更字體大小。"
+          }
+        }
+      }
+    },
+    "history_title" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "历史记录"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "历史记录"
           }
         }
       }

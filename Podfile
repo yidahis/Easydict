@@ -11,6 +11,7 @@ target 'Easydict' do
   pod 'ReactiveObjC', '~> 3.1.1'
   pod 'KVOController', '~> 1.2.0'
   pod 'JLRoutes', '~> 2.1'
+  pod 'FMDB', '~> 2.7'
   
   # Swift format
   pod 'SwiftFormat/CLI', '~> 0.55'
@@ -26,6 +27,7 @@ target 'EasydictTests' do
   pod 'ReactiveObjC', '~> 3.1.1'
   pod 'KVOController', '~> 1.2.0'
   pod 'JLRoutes', '~> 2.1'
+  pod 'FMDB', '~> 2.7'
   
 end
 

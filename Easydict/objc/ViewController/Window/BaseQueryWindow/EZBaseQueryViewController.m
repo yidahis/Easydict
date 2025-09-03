@@ -28,6 +28,7 @@
 #import "EZEventMonitor.h"
 #import "NSString+EZHandleInputText.h"
 #import "Easydict-Swift.h"
+#import "EZHistoryDB.h"
 
 static NSString *const EZQueryViewId = @"EZQueryViewId";
 static NSString *const EZSelectLanguageCellId = @"EZSelectLanguageCellId";
@@ -839,6 +840,21 @@ static void dispatch_block_on_main_safely(dispatch_block_t block) {
 
         //        MMLogInfo(@"update service: %@, %@", service.serviceType, result);
         [self updateCellWithResult:result reloadData:YES];
+
+        // Save lightweight history (first service) and persist full content for every service.
+        if (service == self.firstService && result.hasShowingResult) {
+            NSString *from = self.queryModel.queryFromLanguage ?: @"";
+            NSString *to = self.queryModel.queryTargetLanguage ?: @"";
+            NSString *text = self.queryModel.queryText ?: @"";
+            NSString *res = result.translatedText ?: @"";
+            NSString *serviceName = service.serviceTypeWithUniqueIdentifier ?: @"";
+            if (text.length && (res.length || result.HTMLString.length)) {
+                [[EZHistoryManager shared] saveWithText:text result:res from:from to:to service:serviceName];
+            }
+        }
+
+        // Persist full content to FMDB (if available) for every service result
+        [[EZHistoryDB shared] saveResult:result service:service];
 
         if (service.autoCopyTranslatedTextBlock) {
             service.autoCopyTranslatedTextBlock(result, error);

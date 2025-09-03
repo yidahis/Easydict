@@ -12,6 +12,11 @@ PODS:
   - AFNetworking/Reachability (3.2.1)
   - AFNetworking/Security (3.2.1)
   - AFNetworking/Serialization (3.2.1)
+  - FMDB (2.7.12):
+    - FMDB/standard (= 2.7.12)
+  - FMDB/Core (2.7.12)
+  - FMDB/standard (2.7.12):
+    - FMDB/Core
   - JLRoutes (2.1)
   - KVOController (1.2.0)
   - Masonry (1.1.0)
@@ -21,6 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.2.1)
+  - FMDB (~> 2.7)
   - JLRoutes (~> 2.1)
   - KVOController (~> 1.2.0)
   - Masonry (~> 1.1.0)
@@ -31,6 +37,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
+    - FMDB
     - JLRoutes
     - KVOController
     - Masonry
@@ -40,6 +47,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: cb604b1c2bded0871f5f61f5d53653739e841d6b
+  FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
   JLRoutes: d755245322b94227662ea3e43492fdca94e05c5b
   KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -47,6 +55,6 @@ SPEC CHECKSUMS:
   SwiftFormat: 548c7b221429101546d3caeeeb672f11578df0ad
   SwiftLint: 6c8820d22c8f74baadd5684e00bb7356c34610a1
 
-PODFILE CHECKSUM: 746796701dbaa313ed920d3a7bf22a9f97ee87eb
+PODFILE CHECKSUM: 03e15d2385c63ac40ba1a5bff82183f9c36670cf
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.16.2

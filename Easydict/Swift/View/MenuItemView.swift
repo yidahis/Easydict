@@ -6,9 +6,11 @@
 //  Copyright © 2023 izual. All rights reserved.
 //
 
-import SettingsAccess
-import Sparkle
 import SwiftUI
+#if canImport(SettingsAccess)
+import SettingsAccess
+#endif
+import Sparkle
 import ZipArchive
 
 // MARK: - MenuItemStore
@@ -47,6 +49,7 @@ struct MenuItemView: View {
                 .keyboardShortcut(.selectTranslate)
             miniWindowItem
                 .keyboardShortcut(.showMiniWindow)
+            historyItem
             Divider()
             ocrItem
                 .keyboardShortcut(.silentScreenshotOcr)
@@ -158,6 +161,18 @@ struct MenuItemView: View {
             HStack {
                 Image(systemName: "dock.rectangle")
                 Text("menu_show_mini_window")
+            }
+        }
+    }
+
+    @ViewBuilder private var historyItem: some View {
+        Button {
+            logInfo("打开历史记录")
+            HostWindowManager.shared.showHistoryWindow()
+        } label: {
+            HStack {
+                Image(systemName: "clock.arrow.circlepath")
+                Text("history_title")
             }
         }
     }
