@@ -156,6 +156,8 @@ extension KeyHolderWrapper {
                 Defaults[.eudicShortcut]
             case .appleDic:
                 Defaults[.appleDictionaryShortcut]
+            case .clipboardImageOcr:
+                Defaults[.snipShortcut]
             }
             recordView.keyCombo = keyCombo
             Shortcut.shared.bindingShortcut(keyCombo: keyCombo, type: type)
@@ -204,6 +206,8 @@ extension KeyHolderWrapper {
                 Defaults[.eudicShortcut] = keyCombo
             case .appleDic:
                 Defaults[.appleDictionaryShortcut] = keyCombo
+            case .clipboardImageOcr:
+                Defaults[.snipShortcut]
             }
         }
 

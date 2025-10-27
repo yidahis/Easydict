@@ -85,7 +85,7 @@ extension Shortcut {
 
     @objc
     func snipTranslate() {
-        EZWindowManager.shared().snipTranslate()
+        EZWindowManager.shared().clipboardImageOCR()
     }
 
     @objc

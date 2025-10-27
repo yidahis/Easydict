@@ -1042,6 +1042,28 @@
         }
       }
     },
+    "clipboard_no_image" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有图片"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有图片"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有图片"
+          }
+        }
+      }
+    },
     "collocation" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1136,6 +1158,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy Translated Text"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拷贝翻译文本"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拷貝翻译文本"
           }
         }
       }
@@ -2663,6 +2697,9 @@
           }
         }
       }
+    },
+    "menu_clipboard_image_ocr" : {
+
     },
     "menu_feedback" : {
       "localizations" : {

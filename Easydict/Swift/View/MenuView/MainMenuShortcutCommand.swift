@@ -39,6 +39,7 @@ extension EasydictMainMenu {
             MainMenuShortcutCommandDataItem(type: .google),
             MainMenuShortcutCommandDataItem(type: .eudic),
             MainMenuShortcutCommandDataItem(type: .appleDic),
+            MainMenuShortcutCommandDataItem(type: .clipboardImageOcr), // 添加这一行
         ]
     }
 }

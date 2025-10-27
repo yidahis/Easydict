@@ -21,6 +21,7 @@ public enum ShortcutType: String {
     case selectTranslate = "EZSelectionShortcutKey"
     case silentScreenshotOcr = "EZScreenshotOCRShortcutKey"
     case showMiniWindow = "EZShowMiniShortcutKey"
+    case clipboardImageOcr = "EZClipboardImageOCRShortcutKey"
     // In App
     case clearInput = "EZClearInputShortcutKey"
     case clearAll = "EZClearAllShortcutKey"
@@ -52,6 +53,8 @@ extension ShortcutType {
             "menu_silent_screenshot_OCR"
         case .showMiniWindow:
             "menu_show_mini_window"
+        case .clipboardImageOcr:
+            "menu_clipboard_image_ocr"
         case .clearInput:
             "shortcut_clear_input"
         case .clearAll:
@@ -137,6 +140,12 @@ class Shortcut: NSObject {
         }
     }
 
+    @objc
+    func clipboardImageOCR() {
+        let windowManager = EZWindowManager.shared()
+        windowManager.clipboardImageOCR()
+    }
+
     // Optional
     func reset() {
         // Reset all properties to default value
@@ -156,6 +165,8 @@ extension Shortcut {
         bindingShortcut(keyCombo: Defaults[.screenshotOCRShortcut], type: .silentScreenshotOcr)
         // showMiniWindow
         bindingShortcut(keyCombo: Defaults[.showMiniWindowShortcut], type: .showMiniWindow)
+        // clipboardImageOcr
+        bindingShortcut(keyCombo: Defaults[.clipboardImageOCRShortcut], type: .clipboardImageOcr)
     }
 }
 
@@ -203,6 +214,13 @@ extension Shortcut {
                 target: Shortcut.shared,
                 action: #selector(Shortcut.showMiniFloatingWindow)
             )
+        case .clipboardImageOcr:
+            hotKey = HotKey(
+                identifier: type.rawValue,
+                keyCombo: keyCombo,
+                target: Shortcut.shared,
+                action: #selector(Shortcut.clipboardImageOCR)
+            )
         default: ()
         }
 
@@ -227,6 +245,8 @@ struct KeyboardShortcut: ViewModifier {
             .screenshotOCRShortcut
         case .showMiniWindow:
             .showMiniWindowShortcut
+        case .clipboardImageOcr:
+            .clipboardImageOCRShortcut
         case .clearInput:
             .clearInputShortcut
         case .clearAll:

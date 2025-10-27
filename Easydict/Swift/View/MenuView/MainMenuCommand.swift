@@ -40,7 +40,7 @@ struct EasydictMainMenu: Commands {
             }
         })
 
-        // History Window Shortcut
+        // History Window Shortcut and Clipboard Image OCR
         CommandGroup(after: .appInfo, addition: {
             Button {
                 HostWindowManager.shared.showHistoryWindow()
@@ -48,6 +48,14 @@ struct EasydictMainMenu: Commands {
                 Text("history_title")
             }
             .keyboardShortcut("g", modifiers: [.command, .option])
+
+            // 添加剪贴板图像识别菜单项
+            Button {
+                Shortcut.shared.clipboardImageOCR()
+            } label: {
+                Text("menu_clipboard_image_ocr")
+            }
+            .keyboardShortcut("e", modifiers: [.option])
         })
     }
 

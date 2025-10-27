@@ -22,6 +22,7 @@ extension Shortcut {
         Defaults[.selectionShortcut] = KeyCombo(key: .d, cocoaModifiers: .option)
         Defaults[.showMiniWindowShortcut] = KeyCombo(key: .f, cocoaModifiers: .option)
         Defaults[.screenshotOCRShortcut] = KeyCombo(key: .s, cocoaModifiers: [.option, .shift])
+        Defaults[.clipboardImageOCRShortcut] = KeyCombo(key: .e, cocoaModifiers: [.option])
     }
 
     private func setDefaultForAppShortcut() {

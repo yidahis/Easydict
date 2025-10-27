@@ -14,6 +14,7 @@
 #import "EZCoordinateUtils.h"
 #import "EZLog.h"
 #import "Easydict-Swift.h"
+#import "EZToast.h"
 
 @interface EZWindowManager ()
 
@@ -922,6 +923,42 @@ static EZWindowManager *_instance;
     } else {
         [Snip.shared startWithCompletion:captureCompletion];
     }
+}
+
+- (void)clipboardImageOCR {
+    MMLogInfo(@"Clipboard image OCR");
+    
+    // 获取剪贴板中的图像
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    NSArray *classes = @[ [NSImage class] ];
+    NSDictionary *options = @{ };
+    
+    // 检查剪贴板中是否有图像
+    if ([pasteboard canReadObjectForClasses:classes options:options]) {
+        NSArray *objects = [pasteboard readObjectsForClasses:classes options:options];
+        if (objects.count > 0) {
+            NSImage *image = objects.firstObject;
+            if (image) {
+                // 使用现有的OCR功能处理图像
+                self.actionType = EZActionTypeOCRQuery;
+                EZWindowType windowType = Configuration.shared.shortcutSelectTranslateWindowType;
+                EZBaseQueryWindow *window = [self windowWithType:windowType];
+                
+                // Reset window height first, avoid being affected by previous window height.
+                [window.queryViewController resetTableView:^{
+                    self.actionType = EZActionTypeOCRQuery;
+                    [self showFloatingWindowType:windowType queryText:nil];
+                    [window.queryViewController startOCRImage:image actionType:self.actionType];
+                }];
+                return;
+            }
+        }
+    }
+    
+    // 如果没有图像，显示提示
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [EZToast showText:NSLocalizedString(@"clipboard_no_image", nil)];
+    });
 }
 
 #pragma mark - Application Shortcut

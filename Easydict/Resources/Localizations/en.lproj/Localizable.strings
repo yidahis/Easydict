@@ -1,0 +1,12 @@
+/* 
+Example localizable strings for reference:
+
+"history_title" = "History";
+"check_updates" = "Check for Updates...";
+"menubar.about" = "About Easydict";
+"menu_feedback" = "Feedback";
+"shortcut" = "Shortcuts";
+*/
+
+"menu_clipboard_image_ocr" = "Clipboard Image OCR";
+"clipboard_no_image" = "No image found in clipboard";

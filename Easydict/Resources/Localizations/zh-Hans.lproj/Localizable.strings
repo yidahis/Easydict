@@ -1,0 +1,12 @@
+/* 
+Example localizable strings for reference:
+
+"history_title" = "历史记录";
+"check_updates" = "检查更新";
+"menubar.about" = "关于 Easydict";
+"menu_feedback" = "问题反馈";
+"shortcut" = "快捷键";
+*/
+
+"menu_clipboard_image_ocr" = "剪切板图像识别";
+"clipboard_no_image" = "剪切板中没有图像";

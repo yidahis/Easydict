@@ -62,6 +62,8 @@ struct MainMenuShortcutCommandItem: View {
                 Shortcut.shared.shortcutEudic()
             case .appleDic:
                 Shortcut.shared.shortcutAppleDic()
+            case .clipboardImageOcr:
+                Shortcut.shared.clipboardImageOCR()
             default: ()
             }
         }
