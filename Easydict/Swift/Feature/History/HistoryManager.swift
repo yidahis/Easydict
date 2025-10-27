@@ -77,11 +77,55 @@ final class EZHistoryManager: NSObject {
         persist()
     }
 
+    func delete(id: String) {
+        let originalCount = items.count
+        items.removeAll { $0.id == id }
+        if items.count != originalCount {
+            persist()
+        }
+    }
+
+    // MARK: - Export Functions
+
+    func exportToJSON() -> Data? {
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            encoder.outputFormatting = .prettyPrinted
+            return try encoder.encode(items)
+        } catch {
+            return nil
+        }
+    }
+
+    func exportToCSV() -> String {
+        var csv = "ID,Date,From,To,Service,Query,Result\n"
+
+        for item in items {
+            let dateString = ISO8601DateFormatter().string(from: item.date)
+            let escapedQuery = escapeCSVField(item.text)
+            let escapedResult = escapeCSVField(item.result)
+            let service = item.service ?? ""
+
+            csv += "\(item.id),\(dateString),\(item.from),\(item.to),\(service),\(escapedQuery),\(escapedResult)\n"
+        }
+
+        return csv
+    }
+
     // MARK: Private
 
     private let userDefaultsKey = "kQueryHistoryItems"
     private let maxItems = 200
     private var items: [EZHistoryItem] = []
+
+    private func escapeCSVField(_ field: String) -> String {
+        let escaped = field.replacingOccurrences(of: "\"", with: "\"\"")
+        if escaped.contains(",") || escaped.contains("\"") || escaped.contains("\n") {
+            return "\"\(escaped)\""
+        }
+        return escaped
+    }
 
     private func load() {
         guard let data = UserDefaults.standard.data(forKey: userDefaultsKey) else { return }

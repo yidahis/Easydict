@@ -5,8 +5,16 @@
 //  Created by Assistant on 2025/09/03.
 //
 
+import AppKit
 import Foundation
 import SwiftUI
+
+// MARK: - ExportFormat
+
+enum ExportFormat {
+    case json
+    case csv
+}
 
 // MARK: - HistoryListView
 
@@ -24,8 +32,15 @@ struct HistoryListView: View {
                 detail
             }
         }
-        .frame(minWidth: 980, minHeight: 620)
+        .frame(minWidth: 1000, minHeight: 800)
         .onAppear(perform: reload)
+        .alert("export_result", isPresented: $showingExportAlert) {
+            Button("ok") {
+                showingExportAlert = false
+            }
+        } message: {
+            Text(exportAlertMessage)
+        }
     }
 
     // MARK: Private
@@ -33,6 +48,8 @@ struct HistoryListView: View {
     @State private var rows: [HistoryRow] = []
     @State private var showRawIds: Set<String> = []
     @State private var selectedId: String?
+    @State private var showingExportAlert = false
+    @State private var exportAlertMessage = ""
 
     private var selectedRow: HistoryRow? {
         rows.first { $0.id == selectedId } ?? rows.first
@@ -42,15 +59,36 @@ struct HistoryListView: View {
         HStack {
             Text("history_title").font(.headline)
             Spacer()
-            Button(role: .destructive) {
-                EZHistoryManager.shared.clear()
-                reload()
-            } label: {
-                Label("clear", systemImage: "trash")
+            HStack(spacing: 8) {
+                Menu {
+                    Button {
+                        exportHistory(format: .json)
+                    } label: {
+                        Label("export_json", systemImage: "doc.text")
+                    }
+
+                    Button {
+                        exportHistory(format: .csv)
+                    } label: {
+                        Label("export_csv", systemImage: "tablecells")
+                    }
+                } label: {
+                    Label("export", systemImage: "square.and.arrow.up")
+                }
+                .disabled(rows.isEmpty)
+
+                Button(role: .destructive) {
+                    EZHistoryManager.shared.clear()
+                    reload()
+                } label: {
+                    Label("clear", systemImage: "trash")
+                }
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color(NSColor.controlBackgroundColor))
+        .frame(height: 50)
     }
 
     private var sidebar: some View {
@@ -65,20 +103,13 @@ struct HistoryListView: View {
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
+                .font(.system(size: 10))
 
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text(row.query)
                         .font(.body)
+                        .fontWeight(.bold)
                         .lineLimit(2)
-                    Spacer()
-                    Button {
-                        NSPasteboard.general.clearContents()
-                        NSPasteboard.general.setString(row.query, forType: .string)
-                    } label: {
-                        Image(systemName: "doc.on.doc")
-                    }
-                    .help("copy")
-                    .buttonStyle(.borderless)
                 }
 
                 if !row.translated.isEmpty {
@@ -87,16 +118,26 @@ struct HistoryListView: View {
                             .font(.callout)
                             .foregroundColor(.secondary)
                             .lineLimit(2)
-                        Spacer()
-                        Button {
-                            NSPasteboard.general.clearContents()
-                            NSPasteboard.general.setString(row.translated, forType: .string)
-                        } label: {
-                            Image(systemName: "doc.on.doc")
-                        }
-                        .help("copy")
-                        .buttonStyle(.borderless)
                     }
+                }
+            }
+            .contextMenu {
+                Button("copy") {
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(row.query, forType: .string)
+                }
+                if !row.translated.isEmpty {
+                    Button("copy_translated_text") {
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(row.translated, forType: .string)
+                    }
+                }
+                Divider()
+                Button(role: .destructive) {
+                    EZHistoryManager.shared.delete(id: row.id)
+                    reload()
+                } label: {
+                    Text("delete")
                 }
             }
             .padding(.vertical, 6)
@@ -135,6 +176,40 @@ struct HistoryListView: View {
         rows = tmp
         if selectedId == nil {
             selectedId = rows.first?.id
+        }
+    }
+
+    private func exportHistory(format: ExportFormat) {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = format == .json ? [.json] : [.commaSeparatedText]
+        panel.nameFieldStringValue = "Easydict_History_\(Date().timeIntervalSince1970)"
+
+        let response = panel.runModal()
+        guard response == .OK, let url = panel.url else { return }
+
+        do {
+            switch format {
+            case .json:
+                guard let data = EZHistoryManager.shared.exportToJSON() else {
+                    throw NSError(
+                        domain: "ExportError",
+                        code: 1,
+                        userInfo: [NSLocalizedDescriptionKey: "Failed to generate JSON data"]
+                    )
+                }
+                try data.write(to: url)
+
+            case .csv:
+                let csvString = EZHistoryManager.shared.exportToCSV()
+                try csvString.write(to: url, atomically: true, encoding: .utf8)
+            }
+
+            exportAlertMessage = "export_success \(url.lastPathComponent)"
+            showingExportAlert = true
+
+        } catch {
+            exportAlertMessage = "export_failed \(error.localizedDescription)"
+            showingExportAlert = true
         }
     }
 }

@@ -79,7 +79,12 @@ final class HostWindowManager {
 extension HostWindowManager {
     /// Show the History window.
     func showHistoryWindow() {
-        showWindow(windowId: "history_window", title: NSLocalizedString("history_title", comment: "")) {
+        showWindow(
+            windowId: "history_window",
+            title: NSLocalizedString("history_title", comment: ""),
+            width: 1000,
+            height: 800
+        ) {
             HistoryListView()
         }
     }

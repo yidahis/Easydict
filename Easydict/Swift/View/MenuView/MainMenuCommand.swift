@@ -39,6 +39,16 @@ struct EasydictMainMenu: Commands {
                 Text("check_updates")
             }
         })
+
+        // History Window Shortcut
+        CommandGroup(after: .appInfo, addition: {
+            Button {
+                HostWindowManager.shared.showHistoryWindow()
+            } label: {
+                Text("history_title")
+            }
+            .keyboardShortcut("g", modifiers: [.command, .option])
+        })
     }
 
     // MARK: Private
